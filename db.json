@@ -8,7 +8,7 @@
     {
       "id": 2,
       "title": "For what reason would it be advisable for me to think.",
-      "checked": true
+      "checked": false
     },
     {
       "id": 3,
@@ -28,7 +28,7 @@
     {
       "id": 6,
       "title": "Print bills",
-      "checked": false
+      "checked": true
     }
   ]
 }

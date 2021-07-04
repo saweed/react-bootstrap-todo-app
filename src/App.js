@@ -21,21 +21,52 @@ function App() {
     return await response.json();
   }
   
+  // Fetch ToDo, if single todo to show on page
+  const fetchTodo = async (id) => {
+    const res = await fetch(`http://localhost:3001/todos/${id}`)
+    const data = await res.json()
 
-  const handleAddClick = (params) => {
-    setTodos([...todos, params]);
+    return data
+  }
+
+  const handleAddClick = async (todo) => {
+    const response = await fetch('http://localhost:3001/todos', {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(todo)
+    });
+
+  const data = await response.json();
+  setTodos([...todos, data]);
+
   };
-
-  const onCheckChange = (id) => {
+  const onCheckChange = async (id) => {
+    const todo = await fetchTodo(id);
+    const updatedTodo = { ...todo, checked: !todo.checked };
+    const response = await fetch(`http://localhost:3001/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(updatedTodo)
+    });
+    const data = await response.json();
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo
+        todo.id === id ? { ...todo, checked: data.checked } : todo
       )
     );
   };
 
-  const onRemove = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const onRemove = async (id) => {
+    const response = await fetch(`http://localhost:3001/todos/${id}`, {
+      method: 'DELETE',
+    })
+    response.status === 200 ?
+    setTodos(todos.filter((todo) => todo.id !== id)) :
+    alert("Try again, HTTP error");
   };
 
   return (

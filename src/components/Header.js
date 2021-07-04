@@ -9,9 +9,11 @@ const Header = ({ title, onAdd }) => {
         alert('Please add a title')
         return
     }
-    const id = Math.floor(Math.random() * 10000) + 1;
+    // id removed as json servere handle id
+    // const id = Math.floor(Math.random() * 10000) + 1;
     var checked = Math.random() < 0.5;
-    onAdd({id: id, title: todoTitle, checked: checked});
+    //onAdd({id: id, title: todoTitle, checked: checked});
+    onAdd({title: todoTitle, checked: checked});
     setTodoTitle('');
   }
   
