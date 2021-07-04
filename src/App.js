@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Todolist from "./components/Todolist";
@@ -6,38 +6,21 @@ import Navbar from "./components/Navbar";
 import About from "./components/About";
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "For what reason would it be advisable.",
-      checked: true,
-    },
-    {
-      id: 2,
-      title: "For what reason would it be advisable for me to think.",
-      checked: true,
-    },
-    {
-      id: 3,
-      title: "It be advisable for me to think about business content?",
-      checked: true,
-    },
-    {
-      id: 4,
-      title: "Print Statements all",
-      checked: false,
-    },
-    {
-      id: 5,
-      title: "Call Rampbo",
-      checked: true,
-    },
-    {
-      id: 6,
-      title: "Print bills",
-      checked: false,
-    },
-  ]);
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    const getTodos = async () => {
+      const getServerData = await getTodosFromServer()
+      setTodos(getServerData)
+    }
+    getTodos()
+  }, []);
+  
+  const getTodosFromServer = async () => {
+    const response = await fetch('http://localhost:3001/todos');
+    return await response.json();
+  }
+  
 
   const handleAddClick = (params) => {
     setTodos([...todos, params]);
